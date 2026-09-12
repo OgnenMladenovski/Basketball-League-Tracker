@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(${league.name}, ~{::section})}">
+<body>
+<section class="league-page"
+         th:style="${league.color != null} ? |--league: ${league.color}; --league-accent: ${league.accentColor}| : ''">
+    <div class="league-banner">
+        <div>
+            <div class="kicker" th:text="|Season ${league.season}|">Season</div>
+            <h1 th:text="${league.name}">League</h1>
+            <p class="subtitle"
+               th:text="|${league.winPoints} points for a win, ${league.lossPoints} for a loss. Ties are broken by point difference, then by points scored. The dashed line marks the playoff cut.|">rules</p>
+        </div>
+        <div class="header-actions">
+            <a class="nb-button default" th:href="@{/teams(leagueId=${league.id})}">Teams</a>
+            <a class="nb-button default league-accent" th:href="@{/matches/new(leagueId=${league.id})}">Schedule match</a>
+        </div>
+    </div>
+
+    <h2>Standings</h2>
+    <div class="table-wrap">
+        <table class="nb-table bordered standings">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Team</th>
+                <th class="num">P</th>
+                <th class="num">W</th>
+                <th class="num">L</th>
+                <th class="num">PF</th>
+                <th class="num">PA</th>
+                <th class="num">+/−</th>
+                <th class="num">Pts</th>
+                <th>Form</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="row, it : ${standings}"
+                th:classappend="${(it.index == 0 ? 'leader ' : '') + (it.count == 4 and it.size > 4 ? 'cutoff' : '')}">
+                <td class="rank"><span th:text="${it.count}">1</span></td>
+                <td class="team">
+                    <span th:text="${row.team.name}">Team</span>
+                    <span class="small muted" th:text="${row.team.city}">City</span>
+                </td>
+                <td class="num" th:text="${row.played}">0</td>
+                <td class="num" th:text="${row.wins}">0</td>
+                <td class="num" th:text="${row.losses}">0</td>
+                <td class="num" th:text="${row.pointsFor}">0</td>
+                <td class="num" th:text="${row.pointsAgainst}">0</td>
+                <td class="num" th:text="${row.diffLabel}">0</td>
+                <td class="num pts" th:text="${row.points}">0</td>
+                <td class="form-run">
+                    <span th:each="r : ${row.form}" th:class="${r == 'W'} ? 'w' : 'l'" th:text="${r}">W</span>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(standings)}">
+                <td colspan="10" class="empty">No teams in this league yet.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="two-col">
+        <div>
+            <h2>Results</h2>
+            <div class="table-wrap">
+                <table class="nb-table bordered">
+                    <tbody>
+                    <tr th:each="m : ${results}">
+                        <td class="small date" th:text="${#temporals.format(m.playedAt, 'd MMM')}">date</td>
+                        <td class="team-cell right" th:classappend="${m.awayWin} ? 'loser'" th:text="${m.homeTeam.name}">Home</td>
+                        <td class="score" th:text="|${m.homeScore}–${m.awayScore}|">0–0</td>
+                        <td class="team-cell" th:classappend="${m.homeWin} ? 'loser'" th:text="${m.awayTeam.name}">Away</td>
+                        <td class="actions"><a th:href="@{/matches/{id}/score(id=${m.id})}">Edit</a></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(results)}">
+                        <td class="empty">No games played yet.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div>
+            <h2>Fixtures</h2>
+            <div class="table-wrap">
+                <table class="nb-table bordered">
+                    <tbody>
+                    <tr th:each="m : ${fixtures}">
+                        <td class="small date" th:text="${#temporals.format(m.playedAt, 'd MMM, HH:mm')}">date</td>
+                        <td class="team-cell right" th:text="${m.homeTeam.name}">Home</td>
+                        <td class="score pending">vs</td>
+                        <td class="team-cell" th:text="${m.awayTeam.name}">Away</td>
+                        <td class="actions"><a th:href="@{/matches/{id}/score(id=${m.id})}">Enter score</a></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(fixtures)}">
+                        <td class="empty">Nothing scheduled.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

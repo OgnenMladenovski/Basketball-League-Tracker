@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout('Overview', ~{::section})}">
+<body>
+<section>
+    <div class="page-header">
+        <div>
+            <div class="kicker">Season 2026/27</div>
+            <h1>Season overview</h1>
+        </div>
+        <div class="header-actions">
+            <a class="nb-button pale-yellow" th:href="@{/matches/new}">Schedule match</a>
+        </div>
+    </div>
+
+    <ul class="figures">
+        <li class="tile"><b th:text="${leagueCount}">0</b><span>leagues</span></li>
+        <li class="tile"><b th:text="${teamCount}">0</b><span>teams</span></li>
+        <li class="tile"><b th:text="${playerCount}">0</b><span>players</span></li>
+        <li class="tile"><b th:text="${playedCount}">0</b><span>games played</span></li>
+        <li class="tile"><b th:text="${scheduledCount}">0</b><span>scheduled</span></li>
+    </ul>
+
+    <h2>Leagues</h2>
+    <div th:replace="~{fragments/league :: cards(${leagues}, ${teamCounts}, ${leaders})}"></div>
+
+    <div class="two-col">
+        <div>
+            <h2>Latest results</h2>
+            <div class="table-wrap">
+                <table class="nb-table bordered">
+                    <tbody>
+                    <tr th:each="m : ${latestResults}">
+                        <td class="small date" th:text="${#temporals.format(m.playedAt, 'd MMM')}">date</td>
+                        <td class="team-cell right" th:classappend="${m.awayWin} ? 'loser'" th:text="${m.homeTeam.name}">Home</td>
+                        <td class="score" th:text="|${m.homeScore}–${m.awayScore}|">0–0</td>
+                        <td class="team-cell" th:classappend="${m.homeWin} ? 'loser'" th:text="${m.awayTeam.name}">Away</td>
+                        <td><a th:replace="~{fragments/league :: chip(${m.league})}"></a></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(latestResults)}">
+                        <td class="empty">No games played yet.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div>
+            <h2>Upcoming</h2>
+            <div class="table-wrap">
+                <table class="nb-table bordered">
+                    <tbody>
+                    <tr th:each="m : ${upcoming}">
+                        <td class="small date" th:text="${#temporals.format(m.playedAt, 'd MMM, HH:mm')}">date</td>
+                        <td class="team-cell right" th:text="${m.homeTeam.name}">Home</td>
+                        <td class="score pending">vs</td>
+                        <td class="team-cell" th:text="${m.awayTeam.name}">Away</td>
+                        <td><a th:replace="~{fragments/league :: chip(${m.league})}"></a></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(upcoming)}">
+                        <td class="empty">Nothing scheduled.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

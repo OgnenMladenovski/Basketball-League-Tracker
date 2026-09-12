@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout('Players', ~{::section})}">
+<body>
+<section>
+    <div class="page-header">
+        <div>
+            <div class="kicker" th:text="|${#lists.size(players)} players|">42 players</div>
+            <h1>Players</h1>
+        </div>
+        <div class="header-actions">
+            <a class="nb-button pale-yellow" th:href="@{/players/new(teamId=${selectedTeamId})}">Add player</a>
+        </div>
+    </div>
+
+    <form class="filters" method="get" th:action="@{/players}">
+        <div class="nb-form-group">
+            <label for="teamId">Team</label>
+            <select class="nb-input default" id="teamId" name="teamId">
+                <option value="">All teams</option>
+                <option th:each="t : ${teams}" th:value="${t.id}" th:text="${t.name}"
+                        th:selected="${t.id == selectedTeamId}">Team</option>
+            </select>
+        </div>
+        <div class="nb-form-group">
+            <label for="position">Position</label>
+            <select class="nb-input default" id="position" name="position">
+                <option value="">All positions</option>
+                <option th:each="p : ${positions}" th:value="${p}" th:text="|${p.label} — ${p.displayName}|"
+                        th:selected="${p == selectedPosition}">PG</option>
+            </select>
+        </div>
+        <button class="nb-button default" type="submit">Filter</button>
+        <a class="clear" th:href="@{/players}" th:if="${selectedTeamId != null or selectedPosition != null}">Clear</a>
+    </form>
+
+    <div class="table-wrap">
+        <table class="nb-table bordered">
+            <thead>
+            <tr>
+                <th class="num">#</th>
+                <th>Player</th>
+                <th>Position</th>
+                <th class="num">Height</th>
+                <th class="num">Age</th>
+                <th>Team</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${players}">
+                <td class="num muted" th:text="${p.jerseyNumber}">4</td>
+                <td class="team-cell" th:text="${p.fullName}">Player</td>
+                <td><abbr th:title="${p.position.displayName}" th:text="${p.position.label}">PG</abbr></td>
+                <td class="num" th:text="${p.heightCm != null} ? |${p.heightCm} cm| : '—'">190 cm</td>
+                <td class="num" th:text="${p.age}">25</td>
+                <td><a th:href="@{/players(teamId=${p.team.id})}" th:text="${p.team.name}">Team</a></td>
+                <td class="actions">
+                    <a th:href="@{/players/{id}/edit(id=${p.id})}">Edit</a>
+                    <form th:action="@{/players/{id}/delete(id=${p.id})}" method="post"
+                          th:data-name="${p.fullName}"
+                          onsubmit="return confirm('Release ' + this.dataset.name + '?')">
+                        <button class="link-btn danger" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(players)}">
+                <td colspan="7" class="empty">No players match these filters.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+</body>
+</html>

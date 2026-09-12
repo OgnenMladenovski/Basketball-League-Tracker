@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(title, content)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title} + ' · Basketball League Tracker'">Basketball League Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600;700;800&family=Barlow+Condensed:wght@600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/neobrutalismcss@1.0.0/dist/index.min.css">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="shell">
+    <nav class="nb-navbar">
+        <a class="nb-navbar-brand" th:href="@{/}">
+            <svg class="ball" viewBox="0 0 40 40" aria-hidden="true">
+                <circle cx="20" cy="20" r="18"/>
+                <path d="M20 2v36M2 20h36M7.5 7.5c8 6.5 8 18.5 0 25M32.5 7.5c-8 6.5-8 18.5 0 25"/>
+            </svg>
+            Basketball League Tracker
+        </a>
+        <ul class="nb-navbar-nav">
+            <li class="nb-navbar-item"><a class="nb-navbar-link" th:href="@{/}" th:classappend="${currentPath == '/'} ? 'active'">Overview</a></li>
+            <li class="nb-navbar-item"><a class="nb-navbar-link" th:href="@{/leagues}" th:classappend="${#strings.startsWith(currentPath, '/leagues')} ? 'active'">Leagues</a></li>
+            <li class="nb-navbar-item"><a class="nb-navbar-link" th:href="@{/teams}" th:classappend="${#strings.startsWith(currentPath, '/teams')} ? 'active'">Teams</a></li>
+            <li class="nb-navbar-item"><a class="nb-navbar-link" th:href="@{/players}" th:classappend="${#strings.startsWith(currentPath, '/players')} ? 'active'">Players</a></li>
+            <li class="nb-navbar-item"><a class="nb-navbar-link" th:href="@{/matches}" th:classappend="${#strings.startsWith(currentPath, '/matches')} ? 'active'">Matches</a></li>
+        </ul>
+    </nav>
+</header>
+<main class="shell page">
+    <div th:if="${success}" class="alert success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert error" th:text="${error}"></div>
+    <th:block th:replace="${content}"></th:block>
+</main>
+<footer class="shell colophon">Standings are recomputed from played matches each time they are shown.</footer>
+</body>
+</html>

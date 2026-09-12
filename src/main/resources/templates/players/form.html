@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(${playerId == null} ? 'Add player' : 'Edit player', ~{::section})}">
+<body>
+<section>
+    <div class="page-header">
+        <div>
+            <div class="kicker">Players</div>
+            <h1 th:text="${playerId == null} ? 'Add player' : 'Edit player'">Add player</h1>
+        </div>
+    </div>
+
+    <form class="form" th:object="${form}" method="post"
+          th:action="${playerId == null} ? @{/players} : @{/players/{id}(id=${playerId})}">
+
+        <div class="row">
+            <div class="nb-form-group" th:classappend="${#fields.hasErrors('firstName')} ? 'has-error'">
+                <label for="firstName">First name</label>
+                <input class="nb-input default" id="firstName" type="text" th:field="*{firstName}">
+                <div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+            </div>
+            <div class="nb-form-group" th:classappend="${#fields.hasErrors('lastName')} ? 'has-error'">
+                <label for="lastName">Last name</label>
+                <input class="nb-input default" id="lastName" type="text" th:field="*{lastName}">
+                <div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="nb-form-group" th:classappend="${#fields.hasErrors('jerseyNumber')} ? 'has-error'">
+                <label for="jerseyNumber">Jersey number</label>
+                <input class="nb-input default" id="jerseyNumber" type="number" min="0" max="99" th:field="*{jerseyNumber}">
+                <div class="error" th:if="${#fields.hasErrors('jerseyNumber')}" th:errors="*{jerseyNumber}"></div>
+            </div>
+            <div class="nb-form-group" th:classappend="${#fields.hasErrors('position')} ? 'has-error'">
+                <label for="position">Position</label>
+                <select class="nb-input default" id="position" th:field="*{position}">
+                    <option value="">Select a position</option>
+                    <option th:each="p : ${positions}" th:value="${p}" th:text="|${p.label} — ${p.displayName}|">PG</option>
+                </select>
+                <div class="error" th:if="${#fields.hasErrors('position')}" th:errors="*{position}"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="nb-form-group" th:classappend="${#fields.hasErrors('heightCm')} ? 'has-error'">
+                <label for="heightCm">Height (cm)</label>
+                <input class="nb-input default" id="heightCm" type="number" min="150" max="250" th:field="*{heightCm}">
+                <div class="error" th:if="${#fields.hasErrors('heightCm')}" th:errors="*{heightCm}"></div>
+            </div>
+            <div class="nb-form-group" th:classappend="${#fields.hasErrors('birthDate')} ? 'has-error'">
+                <label for="birthDate">Birth date</label>
+                <input class="nb-input default" id="birthDate" type="date" th:field="*{birthDate}">
+                <div class="error" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></div>
+            </div>
+        </div>
+
+        <div class="nb-form-group" th:classappend="${#fields.hasErrors('teamId')} ? 'has-error'">
+            <label for="teamId">Team</label>
+            <select class="nb-input default" id="teamId" th:field="*{teamId}">
+                <option value="">Select a team</option>
+                <option th:each="t : ${teams}" th:value="${t.id}" th:text="|${t.name} — ${t.city}|">Team</option>
+            </select>
+            <div class="error" th:if="${#fields.hasErrors('teamId')}" th:errors="*{teamId}"></div>
+        </div>
+
+        <div class="form-actions">
+            <button class="nb-button pale-yellow" type="submit" th:text="${playerId == null} ? 'Add player' : 'Save changes'">Save</button>
+            <a th:href="@{/players}">Cancel</a>
+        </div>
+    </form>
+</section>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout('Schedule match', ~{::section})}">
+<body>
+<section>
+    <div class="page-header">
+        <div>
+            <div class="kicker">Matches</div>
+            <h1>Schedule match</h1>
+            <p class="subtitle">Both teams must play in the chosen league. The score is entered after the game.</p>
+        </div>
+    </div>
+
+    <form class="form" th:object="${form}" method="post" th:action="@{/matches}">
+
+        <div class="nb-form-group" th:classappend="${#fields.hasErrors('leagueId')} ? 'has-error'">
+            <label for="leagueId">League</label>
+            <select class="nb-input default" id="leagueId" th:field="*{leagueId}">
+                <option value="">Select a league</option>
+                <option th:each="l : ${leagues}" th:value="${l.id}" th:text="|${l.name} (${l.season})|">League</option>
+            </select>
+            <div class="error" th:if="${#fields.hasErrors('leagueId')}" th:errors="*{leagueId}"></div>
+        </div>
+
+        <div class="row">
+            <div class="nb-form-group" th:classappend="${#fields.hasErrors('homeTeamId')} ? 'has-error'">
+                <label for="homeTeamId">Home team</label>
+                <select class="nb-input default" id="homeTeamId" th:field="*{homeTeamId}">
+                    <option value="">Select a team</option>
+                    <option th:each="t : ${teams}" th:value="${t.id}"
+                            th:text="|${t.name} (${#strings.listJoin(t.leagues.![name], ', ')})|">Team</option>
+                </select>
+                <div class="error" th:if="${#fields.hasErrors('homeTeamId')}" th:errors="*{homeTeamId}"></div>
+            </div>
+            <div class="nb-form-group" th:classappend="${#fields.hasErrors('awayTeamId')} ? 'has-error'">
+                <label for="awayTeamId">Away team</label>
+                <select class="nb-input default" id="awayTeamId" th:field="*{awayTeamId}">
+                    <option value="">Select a team</option>
+                    <option th:each="t : ${teams}" th:value="${t.id}"
+                            th:text="|${t.name} (${#strings.listJoin(t.leagues.![name], ', ')})|">Team</option>
+                </select>
+                <div class="error" th:if="${#fields.hasErrors('awayTeamId')}" th:errors="*{awayTeamId}"></div>
+            </div>
+        </div>
+
+        <div class="nb-form-group" th:classappend="${#fields.hasErrors('playedAt')} ? 'has-error'">
+            <label for="playedAt">Tip-off</label>
+            <input class="nb-input default" id="playedAt" type="datetime-local" th:field="*{playedAt}">
+            <div class="error" th:if="${#fields.hasErrors('playedAt')}" th:errors="*{playedAt}"></div>
+        </div>
+
+        <div class="form-actions">
+            <button class="nb-button pale-yellow" type="submit">Schedule</button>
+            <a th:href="@{/matches}">Cancel</a>
+        </div>
+    </form>
+</section>
+</body>
+</html>

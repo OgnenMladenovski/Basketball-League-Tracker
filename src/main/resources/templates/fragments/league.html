@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<a th:fragment="chip(league)" class="chip" th:href="@{/leagues/{id}(id=${league.id})}"
+   th:style="${league.color != null} ? |--league: ${league.color}; --league-accent: ${league.accentColor}| : ''"
+   th:text="${league.name}">League</a>
+
+<div th:fragment="cards(leagues, teamCounts, leaders)" class="league-grid">
+    <article class="league-card" th:each="l : ${leagues}"
+             th:style="${l.color != null} ? |--league: ${l.color}; --league-accent: ${l.accentColor}| : ''">
+        <header class="league-card-head">
+            <span class="kicker" th:text="|Season ${l.season}|">Season</span>
+            <h3 th:text="${l.name}">League</h3>
+        </header>
+        <dl class="league-card-body">
+            <div>
+                <dt>Teams</dt>
+                <dd th:text="${teamCounts[l.id]}">0</dd>
+            </div>
+            <div>
+                <dt>Points</dt>
+                <dd th:text="|${l.winPoints} W · ${l.lossPoints} L|">2 W · 1 L</dd>
+            </div>
+            <div class="wide">
+                <dt>Leader</dt>
+                <dd th:if="${leaders[l.id] != null}"
+                    th:text="|${leaders[l.id].team.name} (${leaders[l.id].wins}–${leaders[l.id].losses})|">Team</dd>
+                <dd th:if="${leaders[l.id] == null}">—</dd>
+            </div>
+        </dl>
+        <footer class="league-card-foot">
+            <a class="nb-button default league-accent" th:href="@{/leagues/{id}(id=${l.id})}">Standings</a>
+            <a class="nb-button default" th:href="@{/teams(leagueId=${l.id})}">Teams</a>
+        </footer>
+    </article>
+    <p th:if="${#lists.isEmpty(leagues)}" class="empty">No leagues yet.</p>
+</div>
+
+</body>
+</html>

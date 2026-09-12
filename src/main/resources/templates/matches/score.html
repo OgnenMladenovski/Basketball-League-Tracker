@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout('Enter score', ~{::section})}">
+<body>
+<section class="league-page"
+         th:style="${match.league.color != null} ? |--league: ${match.league.color}; --league-accent: ${match.league.accentColor}| : ''">
+    <div class="page-header">
+        <div>
+            <a th:replace="~{fragments/league :: chip(${match.league})}"></a>
+            <h1 th:text="${match.played} ? 'Edit score' : 'Enter score'">Enter score</h1>
+            <p class="subtitle" th:text="|${#temporals.format(match.playedAt, 'EEEE d MMMM yyyy, HH:mm')}. Saving the score updates the standings immediately.|">Saving the score updates the league standings immediately.</p>
+        </div>
+    </div>
+
+    <form class="form" th:object="${form}" method="post" th:action="@{/matches/{id}/score(id=${match.id})}">
+
+        <div class="scoreboard">
+            <div class="nb-form-group" th:classappend="${#fields.hasErrors('homeScore')} ? 'has-error'">
+                <div class="team" th:text="${match.homeTeam.name}">Home</div>
+                <div class="small muted" th:text="${match.homeTeam.city}">City</div>
+                <input class="nb-input default" id="homeScore" type="number" min="0" max="300" th:field="*{homeScore}" placeholder="0">
+                <div class="error" th:if="${#fields.hasErrors('homeScore')}" th:errors="*{homeScore}"></div>
+            </div>
+            <div class="vs">Final</div>
+            <div class="nb-form-group" th:classappend="${#fields.hasErrors('awayScore')} ? 'has-error'">
+                <div class="team" th:text="${match.awayTeam.name}">Away</div>
+                <div class="small muted" th:text="${match.awayTeam.city}">City</div>
+                <input class="nb-input default" id="awayScore" type="number" min="0" max="300" th:field="*{awayScore}" placeholder="0">
+                <div class="error" th:if="${#fields.hasErrors('awayScore')}" th:errors="*{awayScore}"></div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button class="nb-button default league-accent" type="submit">Save score</button>
+            <a th:href="@{/matches}">Cancel</a>
+        </div>
+    </form>
+</section>
+</body>
+</html>

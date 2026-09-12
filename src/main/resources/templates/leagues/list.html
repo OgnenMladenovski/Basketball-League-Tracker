@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout('Leagues', ~{::section})}">
+<body>
+<section>
+    <div class="page-header">
+        <div>
+            <div class="kicker" th:text="|${#lists.size(leagues)} competitions|">2 competitions</div>
+            <h1>Leagues</h1>
+        </div>
+        <div class="header-actions">
+            <a class="nb-button pale-yellow" th:href="@{/matches/new}">Schedule match</a>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/league :: cards(${leagues}, ${teamCounts}, ${leaders})}"></div>
+</section>
+</body>
+</html>
