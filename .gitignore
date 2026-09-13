@@ -9,7 +9,6 @@ target/
 *.ipr
 
 .vscode/
-
 .DS_Store
 
 *.log
