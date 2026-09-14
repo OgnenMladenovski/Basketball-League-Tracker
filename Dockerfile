@@ -52,7 +52,7 @@ EXPOSE 8080
 # --interval=30s - tests every 30s
 # --timeout=5s - if there is no response in 5s, its counted as a failure
 # --start-period=40s - gives Spring Boot 40s to start before the container counts failures
-# --retries=3 - after 3 failures the container is marked as unhealthy
+# --retries=3 - after 3 consecutive failures the container is marked as unhealthy
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
     CMD wget -qO- http://localhost:8080/actuator/health || exit 1
 
