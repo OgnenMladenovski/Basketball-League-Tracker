@@ -10,9 +10,8 @@ env:
   IMAGE: ognenmladenovski767/basketball-league
 
 jobs:
-  # First Job - Build and Test
   test:
-    name: Build and Test
+    name: First Job - Build and Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -28,9 +27,8 @@ jobs:
       - name: Build and Run tests
         run: mvn -B verify
 
-  # Second Job - Build Image and Push
   push:
-    name: Build image and Push to Docker Hub
+    name: Second Job - Build Image and Push to Docker Hub
     needs: test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -38,7 +36,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
+      - name: Set up Docker Buildx (for layer caching, same as Dockerfile)
         uses: docker/setup-buildx-action@v3
 
       - name: Login to Docker Hub (Using GitHub Secrets)
@@ -47,7 +45,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Extract metadata
+      - name: Generate image tags (latest + SHA)
         id: meta
         uses: docker/metadata-action@v5
         with:
