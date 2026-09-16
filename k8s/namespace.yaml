@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: basketball-league-tracker
+  labels:
+    app.kubernetes.io/name: basketball-league-tracker
+    app.kubernetes.io/part-of: basketball-league-tracker
