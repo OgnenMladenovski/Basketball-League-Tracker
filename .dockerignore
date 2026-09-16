@@ -1,8 +1,8 @@
 target/
 .git/
 .idea/
-*.iml
 .env
 .DS_Store
 *.md
 .github
+k8s/

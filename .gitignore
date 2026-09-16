@@ -13,3 +13,5 @@ target/
 
 *.log
 .env
+
+k8s/secret.yaml
