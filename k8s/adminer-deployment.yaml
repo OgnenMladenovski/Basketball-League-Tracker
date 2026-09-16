@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adminer
+  namespace: basketball-league-tracker
+  labels:
+    app.kubernetes.io/name: basketball-league-tracker
+    app.kubernetes.io/component: adminer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: basketball-league-tracker
+      app.kubernetes.io/component: adminer
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: basketball-league-tracker
+        app.kubernetes.io/component: adminer
+    spec:
+      containers:
+        - name: adminer
+          image: adminer:4
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: ADMINER_DEFAULT_SERVER
+              valueFrom:
+                configMapKeyRef:
+                  name: basketball-league-tracker-config
+                  key: DB_HOST
+          resources:
+            limits:
+              memory: 128Mi
