@@ -12,9 +12,9 @@
     </parent>
 
     <groupId>mk.ukim.finki</groupId>
-    <artifactId>basketball-league</artifactId>
+    <artifactId>basketball-league-tracker</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>basketball-league</name>
+    <name>basketball-league-tracker</name>
     <description>Basketball league tracker with computed standings</description>
 
     <properties>

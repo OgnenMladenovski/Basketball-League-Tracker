@@ -40,7 +40,7 @@ RUN addgroup -S app && adduser -S app -G app
 WORKDIR /app
 
 # Copying the jar from the Build Stage renamed to app.jar
-COPY --from=build /app/target/basketball-league-*.jar app.jar
+COPY --from=build /app/target/basketball-league-tracker-*.jar app.jar
 
 # The non-root user takes over from here
 USER app

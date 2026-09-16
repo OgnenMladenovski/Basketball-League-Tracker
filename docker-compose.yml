@@ -21,7 +21,7 @@ services:
 
   app:
     build: .
-    image: ognenmladenovski767/basketball-league:latest
+    image: ognenmladenovski767/basketball-league-tracker:latest
     container_name: basketball_league_app
     restart: unless-stopped
     env_file: .env

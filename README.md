@@ -136,10 +136,10 @@ On every push to `main`, GitHub Actions runs three jobs in sequence:
 
 Pull requests only run the tests.
 
-Image: **https://hub.docker.com/r/ognenmladenovski767/basketball-league**
+Image: **https://hub.docker.com/r/ognenmladenovski767/basketball-league-tracker**
 
 ```bash
-docker pull ognenmladenovski767/basketball-league:latest
+docker pull ognenmladenovski767/basketball-league-tracker:latest
 ```
 
 ---
