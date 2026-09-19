@@ -3,8 +3,6 @@ kind: Ingress
 metadata:
   name: basketball-league-tracker-ingress
   namespace: basketball-league-tracker
-  labels:
-    app.kubernetes.io/name: basketball-league-tracker
 spec:
   ingressClassName: nginx
   rules:

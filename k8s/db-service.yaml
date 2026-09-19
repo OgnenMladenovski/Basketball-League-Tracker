@@ -3,14 +3,10 @@ kind: Service
 metadata:
   name: db
   namespace: basketball-league-tracker
-  labels:
-    app.kubernetes.io/name: basketball-league-tracker
-    app.kubernetes.io/component: database
 spec:
   clusterIP: None
   selector:
-    app.kubernetes.io/name: basketball-league-tracker
-    app.kubernetes.io/component: database
+    service: db
   ports:
     - name: postgres
       port: 5432

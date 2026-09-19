@@ -3,21 +3,16 @@ kind: StatefulSet
 metadata:
   name: db
   namespace: basketball-league-tracker
-  labels:
-    app.kubernetes.io/name: basketball-league-tracker
-    app.kubernetes.io/component: database
 spec:
   serviceName: db
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: basketball-league-tracker
-      app.kubernetes.io/component: database
+      service: db
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: basketball-league-tracker
-        app.kubernetes.io/component: database
+        service: db
     spec:
       containers:
         - name: postgres

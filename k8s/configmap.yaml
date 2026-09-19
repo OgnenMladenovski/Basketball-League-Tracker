@@ -3,8 +3,6 @@ kind: ConfigMap
 metadata:
   name: basketball-league-tracker-config
   namespace: basketball-league-tracker
-  labels:
-    app.kubernetes.io/name: basketball-league-tracker
 data:
   POSTGRES_DB: basketball
   DB_HOST: db
