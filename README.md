@@ -172,9 +172,6 @@ kind: Secret
 metadata:
   name: basketball-league-tracker-secret
   namespace: basketball-league-tracker
-  labels:
-    app.kubernetes.io/name: basketball-league-tracker
-    app.kubernetes.io/component: database
 type: Opaque
 stringData:
   username: basketball
